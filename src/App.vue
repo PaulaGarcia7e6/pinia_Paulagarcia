@@ -10,9 +10,11 @@ const cartStore = useCartStore();
 productStore.fill()
 const addToCart = (count, product) => {
   count = parseInt(count)
-  for (let index = 0; index < count; index++) {
-    cartStore.items.push(product);
-  }
+  cartStore.$patch(state => {
+    for (let index = 0; index < count; index++) {
+      state.items.push(product);
+    }
+  })
 }
 </script>
 
@@ -21,7 +23,7 @@ const addToCart = (count, product) => {
     <TheHeader />
     <ul class="sm:flex flex-wrap lg:flex-nowrap gap-5">
       <ProductCard v-for="product in productStore.products" :key="product.name" :product="product"
-        @addToCart="addToCart($event, product)" />
+        @addToCart="cartStore.addItems($event, product)" />
     </ul>
   </div>
 </template>
