@@ -25,6 +25,8 @@ export const useCartStore = defineStore("CartStore", {
         //getters en versio arrow
         count: (state) => state.items.length,
         isEmpty: (state) => state.count === 0,
-        grouped: state => groupBy(state.items, item => item.name)
+        grouped: state => groupBy(state.items, item => item.name),
+        groupCount: (state) => (name) => state.grouped[name].length,
+        reduce: (state) => state.items.price((a, b) => a + b, 0)
     }
 });
