@@ -13,7 +13,15 @@ export const useCartStore = defineStore("CartStore", {
             for (let index = 0; index < count; index++) {
                 this.items.push({ ...items });
             }
+        },
+        clearItem(itemName) {
+            this.items = this.items.filter(item => item.name != itemName)
+        },
+        setItemCount(item, count) {
+            this.clearItem(item.name)
+            this.addItems(count, item)
         }
+
     },
     getters: {
         // count() {
@@ -27,6 +35,8 @@ export const useCartStore = defineStore("CartStore", {
         isEmpty: (state) => state.count === 0,
         grouped: state => groupBy(state.items, item => item.name),
         groupCount: (state) => (name) => state.grouped[name].length,
-        reduce: (state) => state.items.price((a, b) => a + b, 0)
+        //La meva funcio de reduce primer extraeix un array de preus amb la funcio .map() 
+        //y finalment fa la funcio .reduce() per obtenir el total.
+        reduce: (state) => state.items.map((item) => item.price).reduce((a, b) => a + b, 0)
     }
 });
