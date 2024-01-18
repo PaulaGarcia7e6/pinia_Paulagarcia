@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { groupBy } from "lodash";
+import { groupBy, sortBy } from "lodash";
 
 export const useCartStore = defineStore("CartStore", {
     state: () => {
@@ -33,7 +33,19 @@ export const useCartStore = defineStore("CartStore", {
         //getters en versio arrow
         count: (state) => state.items.length,
         isEmpty: (state) => state.count === 0,
-        grouped: state => groupBy(state.items, item => item.name),
+        grouped: state => {
+            const groupedItems = groupBy(state.items, item => item.name);
+            // Unir todos los elementos en un solo array
+            const allItems = Object.values(groupedItems).flat();
+
+            // Ordenar el array completo
+            const sortedItems = sortBy(allItems, item => item.name);
+
+            // Volver a agrupar por nombre después de ordenar
+            const sortedGroupedItems = groupBy(sortedItems, item => item.name);
+
+            return sortedGroupedItems;
+        },
         groupCount: (state) => (name) => state.grouped[name].length,
         //La meva funcio de reduce primer extraeix un array de preus amb la funcio .map() 
         //y finalment fa la funcio .reduce() per obtenir el total.
