@@ -35,6 +35,7 @@ const cartStore = useCartStore();
       <div v-else><em>Cart is Empty</em></div>
     </AppModalOverlay>
   </div>
+  <AppButton @click="cartStore.checkout" class="primary">Checkout</AppButton>
 </template>
 <style lang="pcss" scoped>
 .items-in-cart{
